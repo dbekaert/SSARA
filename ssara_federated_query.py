@@ -173,7 +173,7 @@ Usage Examples:
     ### QUERY THE APIs AND GET THE JSON RESULTS ###
     params = urlencode(query_dict)
     ssara_url = "https://web-services.unavco.org/brokered/ssara/api/sar/search?%s" % params
-    print("Running SSARA API Query")
+    print("Running SSARA API Query: ",ssara_url)
     t = time.time()
     f = urlopen(ssara_url)
     json_data = f.read().decode('utf8')
@@ -187,9 +187,11 @@ Usage Examples:
             print(d)
         print("###########################")
 
+    print("Found %d scenes" % len(scenes))
+    if not scenes: exit()
+
     ### ORDER THE SCENES BY STARTTIME, NEWEST FIRST ###
     scenes = sorted(scenes, key=operator.itemgetter('startTime'), reverse=True)
-    print("Found %d scenes" % len(scenes))
     if opt_dict['monMin'] or opt_dict['monMax']:
         try:
             scenes = [r for r in sorted(scenes, key=operator.itemgetter('startTime')) 
